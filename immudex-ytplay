@@ -19,11 +19,13 @@ def usage():
   When you put keywords in -s option, you need to choose
   that you want listening an audiotrack (-a) oraz watch video (-v)
   Usage:
-    $ immudex-ytplay -s -a [-f ytdl-format] 'lofi'
-    $ immudex-ytplay -v https://youtube.com/watch?v=... [-f ytdl-format]
+    $ immudex-ytplay -s -a 'lofi'
+    $ immudex-ytplay -v https://youtube.com/watch?v=...
     $ immudex-ytplay -a https://youtube.com/watch?v=... [-f ytdl-format]
   You can search again the same keywords puting 'r' or 'R' instead
-  of video numer  
+  of video numer. After you choose you video or put video link script prints
+  all available formats, and ask you to choose one pair of ID's - video+audio
+  in this format. 
   ''')
 
 def ytSearch(keywords, maxResults=15):
@@ -42,7 +44,16 @@ def ytSearch(keywords, maxResults=15):
     i = input("Put number of video you wanna watch or put 'r' to reload search result: ")
 
   i = int(i) - 1
-  return(results[i]['id'], results[i]['title'], results[i]['channel'], results[i]['duration'], results[i]['publish_time']);
+  return(results[i]['id'], results[i]['title'], results[i]['channel'], results[i]['duration'], results[i]['publish_time'])
+
+def getFormat(videoID):
+  subprocess.run(['yt-dlp', '--list-formats', 'https://youtube.com/watch?v=' + videoID])
+  f = input("Please choose youtube video format, you need put video+audio ID of quality in this format:") 
+  return f 
+
+if len(sys.argv) < 2:
+  usage()
+  sys.exit(2)
 
 if sys.argv[1] == '-s':
   if len(sys.argv) > 2:
@@ -52,35 +63,43 @@ if sys.argv[1] == '-s':
       mode = "audio"
     else:
       usage()
-      sys.exit(2) 
-    if len(sys.argv) > 3:
-      if sys.argv[3][0:5] == "best[":
-        ytFormat=sys.argv[3]
-      else:
-        ytFormat = "best"
-        keywords=sys.argv[3]
-    if len(sys.argv) > 4: 
-      keywords = sys.argv[4]
+      sys.exit(2)
+    #if len(sys.argv) > 3:
+    #  if sys.argv[4][0:5] == "best[":
+    #    ytFormat=sys.argv[4]
+    #  else:
+    #    ytFormat = "best"
+    #    keywords=sys.argv[3]
+    #if len(sys.argv) > 4: 
+    keywords = sys.argv[3]
     
     #link = f"https://youtube.com/watch?v={ytSearch(keywords)}"
     video = ytSearch(keywords)
     #print(video)
     subprocess.run('clear')
-    print(f"\033[91m1\033[0m. Title: \033[92m{video[1]}\033[0m")
-    print(f"  Channel: \033[93m{video[2]}\033[0m, Duration: \033[94m{video[3]}\033[0m, PubDate: \033[95m{video[4]}\033[0m")
-    print("===================================================================")
+
     if mode == 'audio':
       ytFormat = "--no-video"
     else:
-      ytFormat = "--ytdl-format=" + ytFormat
+      #subprocess.run(['yt-dlp', '--list-formats', 'https://youtube.com/watch?v=' + video[0]])
+      #ytFormat = input("Please choose youtube video format, you need put video+audio quality in this format:")
+      ytFormat = "--ytdl-format=" + getFormat(video[0])
 
-    subprocess.run(['mpv', ytFormat, 'ytdl://' + video[0]])
+    subprocess.run('clear') 
+    print(f"\033[91m1\033[0m. Title: \033[92m{video[1]}\033[0m")
+    print(f"  Channel: \033[93m{video[2]}\033[0m, Duration: \033[94m{video[3]}\033[0m, PubDate: \033[95m{video[4]}\033[0m")
+    print("===================================================================")
+    
+    subprocess.run(['mpv', ytFormat, 'https://youtube.com/watch?v=' + video[0]])
+  else:
+    usage()
+    sys.exit(2)
 
 elif sys.argv[1] == '-a':
   if len(sys.argv) > 2:
     link=sys.argv[2]
     ytFormat="--no-video"
-    subprocess.run(['mpv', ytFormat, 'ytdl://' + link])
+    subprocess.run(['mpv', ytFormat, link])
   else:
     usage()
     sys.exit(2)
@@ -88,11 +107,9 @@ elif sys.argv[1] == '-a':
 elif sys.argv[1] == '-v':
   if len(sys.argv) > 2:
     link=sys.argv[2]
-    if len(sys.argv) > 3:
-      ytFormat="--ytdl-format=" + sys.argv[3]
-    else:
-      ytFormat="--ytdl-format=best"
-    subprocess.run(['mpv', ytFormat, 'ytdl://' + link])
+    videoID=link[-11:]
+    ytFormat="--ytdl-format=" + getFormat(videoID)
+    subprocess.run(['mpv', ytFormat, link])
   else:
     usage()
     sys.exit(2)   
