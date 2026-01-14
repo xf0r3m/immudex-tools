@@ -1,0 +1,83 @@
+#!/bin/bash
+
+if [ -f /etc/motd.conf ]; then
+  source /etc/motd.conf;
+else
+  source /usr/share/doc/immudex-motd/motd.conf.sample;
+fi
+
+if [ "$1" ]; then
+  if [ "$1" = "-h" ] || [ "$1" = "--help" ]; then
+  echo "immudex-motd - prints configurable message of the day";
+  echo "morketsmerke.org @ 2026";
+  echo;
+  echo "Configuration:";
+  echo "Script could be configured via configuration file located in ";
+  echo "/etc/motd.conf. More details is in that file.";
+  fi
+fi
+
+echo -en "\e[1m"; echo "$(hostname)" | /usr/bin/figlet | lolcat; echo -en "\e[0m";
+echo;
+echo "Today is: $(date)";
+echo;
+echo "System summary: ";
+cpuIdle=$(vmstat | tail -1 | awk '{printf $15}');
+cpuUsage=$((100 - $cpuIdle));
+echo -e "  \tCPU: ${cpuUsage}%";
+echo -e "  \tMEM: $(free -h | sed -n '2p' | awk '{printf $7}' | sed 's/i//') Free";
+if [ "$MOUNT_POINTS" ]; then
+  echo -e "  \tMount points:\tFree/Total\t(Usage%)";
+  for mountPoint in $MOUNT_POINTS; do
+    if $(df -h 2>/dev/null | grep -q "${mountPoint}"); then
+      diskSize=$(df -h 2> /dev/null | grep "${mountPoint}" | awk '{printf $2}');
+      diskFree=$(df -h 2> /dev/null | grep "${mountPoint}" | awk '{printf $4}');
+      diskUsage_perc=$(df -h 2> /dev/null | grep "${mountPoint}" | sed 's/%//' | awk '{printf $5}');
+      echo -e "\t$(echo $mountPoint | sed 's,\$,,'):\t\t${diskFree}/${diskSize}\t(${diskUsage_perc}%)";
+    fi
+  done
+fi
+if $(echo $OPTIONS | grep -q 'cryptparts'); then
+  if $(df -h 2> /dev/null | grep -q '/dev/mapper'); then
+    i=1;
+    echo -e "  \tCRYPT_PARTi: Free/Total (Usage%)";
+    amountOfDisks=$(df -h 2> /dev/null | grep '/dev/mapper' | wc -l | awk '{printf $1}');
+    while [ $i -le $amountOfDisks ]; do
+      diskSize=$(df -h 2> /dev/null | grep '/dev/mapper' | sed -n "${i}p" | awk '{printf $2}');
+      diskFree=$(df -h 2> /dev/null | grep '/dev/mapper' | sed -n "${i}p" | awk '{printf $4}');
+      diskUsage_perc=$(df -h 2> /dev/null | grep '/dev/mapper' | sed -n "${i}p" | sed 's/%//' | awk '{printf $5}');
+    #FCP = First Crypt Partition
+      echo -e "  \tCRYPT_PART${i}: ${diskFree}/${diskSize}   (${diskUsage_perc}%)";
+      i=$((i + 1));
+    done
+  else
+    echo -e "  \tCRYPT_PART: N/A";
+  fi
+fi
+echo -e "  \tIP: $(ip addr show $(sed -n '2p' /proc/net/route | awk '{printf $1}') | grep 'inet\ ' | awk '{printf $2"\n"}')";
+echo -e "  \tPROCESSES: $(ps -aux | wc -l | awk '{printf $1}')";
+if $(uptime | grep -q 'day'); then
+  utime=$(uptime | awk '{printf $3" "$4" "$5}' | sed -e 's/\,$//' -e 's,:,h ,');
+  echo -e "\tUPTIME: ${utime}m";
+else
+  utime=$(uptime | awk '{printf $3}' | sed -e 's/,//' -e 's,:,h ,');
+  if $(echo $utime | grep -q "h"); then
+    echo -e "  \tUPTIME: ${utime}m";
+  else
+    echo -e "  \tUPTIME: 0h ${utime}m";
+  fi
+fi
+echo -e " \t$(uptime | grep -o "load.*$" | tr [a-z] [A-Z])";
+echo;
+echo "Weather:";
+if [ -x /usr/bin/immudex-meteo ]; then
+  if [ "$LOCATION" ]; then
+    /usr/bin/immudex-meteo -m $LOCATION;
+  fi
+fi
+echo;
+if [ "$FOOTER" ]; then
+  echo -e "$FOOTER";
+fi
+echo;
+echo "====================================================================";
