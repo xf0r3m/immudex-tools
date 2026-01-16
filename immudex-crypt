@@ -52,7 +52,7 @@ function list() {
 
   if [ "$luksDevicesList" ]; then
     for lDevice in $luksDevicesList; do
-      lDeviceSize=$(lsblk | grep "$(basename $lDevice)" | awk '{printf $4}');
+      lDeviceSize=$(lsblk | grep "$(basename $lDevice)" | sed -n '1p' | awk '{printf $4}');
       echo -e "$lDevice\t\t$lDeviceSize";
     done
   else
