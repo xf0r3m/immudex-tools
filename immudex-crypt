@@ -6,10 +6,10 @@ function help() {
   echo "@ 2024 morketsmerke.org";
   echo "Superuser (root) privileges are required.";
   echo "Options:";
-  echo "  list - displaing list of opened and available crypt_LUKS devices";
-  echo "  create - formatting device for crypt_LUKS";
-  echo "  open - opening crypt_LUKS device, after this device is ready to mount";
-  echo "  close - unmount and closing crypt_LUKS devices";
+  echo "  --list - displaing list of opened and available crypt_LUKS devices";
+  echo "  --create - formatting device for crypt_LUKS";
+  echo "  --open - opening crypt_LUKS device, after this device is ready to mount";
+  echo "  --close - unmount and closing crypt_LUKS devices";
   echo "Using:";
   echo "# immudex-crypt list";
   echo "# immudex-crypt create <disk partition>";
@@ -156,18 +156,21 @@ if [ "$1" ]; then
   export RUID=$(grep '^Uid:' /proc/$(pidof -s sudo)/status | awk '{printf $2}');
   export USER=$(grep "$RUID" /etc/passwd | cut -d ":" -f1);
 
-  case $1 in
-    "list") list;;
-    "open") if [ "$2" ]; then open $2;
+  option=$(echo $1 | cut -d '=' -f 1);
+  value=$(echo $1 | cut -d '=' -f 2-);
+
+  case $option in
+    "--list") list;;
+    "--open") if [ "$value" ]; then open $value;
             else help; exit 1;
             fi;;
-    "close") if [ "$2" ]; then close $2;
+    "--close") if [ "$value" ]; then close $value;
             else help; exit 1;
             fi;;
-    "create") if [ "$2" ]; then 
-                create $2;
-                open $2;
-                set_ownership $2; 
+    "--create") if [ "$value" ]; then 
+                create $value;
+                open $value;
+                set_ownership $value; 
               else help; exit 1;
               fi;;
           *) help;;
