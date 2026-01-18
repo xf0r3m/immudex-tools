@@ -6,27 +6,38 @@ from youtube_search import YoutubeSearch
 
 def usage():
 
-  print(
-  '''
-  immudex-ytplay - script which could play a video or audio track from youtube
-  @ 2023 (original bash script), 2025 (python script) morketsmerke.org
-  Options:
-    --search - search given keyword on youtube.
-    --video - play youtube video.
-    --audio - play only youtube video audiotrack
-  Ommiting -s option, assume you are give a yt video link.
-  You have to put -v or -a before you paste a yt video link
-  When you put keywords in -s option, you need to choose
-  that you want listening an audiotrack (--audio) oraz watch video (--video)
-  Usage:
-    $ immudex-ytplay --search='lofi' --audio
-    $ immudex-ytplay --video https://youtube.com/watch?v=...
-    $ immudex-ytplay --audio https://youtube.com/watch?v=...
-  You can search again the same keywords puting 'r' or 'R' instead
-  of video numer. After you choose you video or put video link script prints
-  all available formats, and ask you to choose one pair of ID's - video+audio
-  in this format. 
-  ''')
+  print('''immudex-ytplay script for playing a video or audio track from YouTube. Script
+can search based on given keywords and return list of results. User choose
+one of result or repeats searching with 'r' || 'R' answer to number from
+list result. Then script quering YouTube for available formats and table
+with possible format are printed. User have to put video and audio quality
+from table in requested format: videoQualityID+audioQualityID. There are
+a hint. Script is half-interactive.
+  
+Usage: immudex-ytplay [OPTIONS] [Keywords/YouTube Link]
+
+Options:
+  --search='keywords1 ... keywordsN' --video/--audio   Search given keywords on YouTube and play video or audiotrack.
+  --video YouTube_Link                                 Play YouTube video.
+  --audio YouTube_Link                                 Play only YouTube video audiotrack.
+  --help                                               Print this message.
+  --version                                            Print information about version, author and copyrights.
+
+Examples:
+  immudex-ytplay --search='lofi' --audio                  Script will be search a lofi keyword in YouTube and play only audio tracks from choosen video.
+  immudex-ytplay --video https://youtube.com/watch?v=...  Script will be play a video from given link, of course is publicly available.
+  immudex-ytplay --audio https://youtube.com/watch?v=...  Script will be play a audio track from given video link. The principle of video playback also applies here.
+
+Report bugs to <xf0r3m@gmail.com>''')
+
+def version():
+  print('''immudex-ytplay 0.0.1
+
+Copyright (C) 2025 morketsmerke.org
+This is free software; see the source for copying conditions.  There is NO
+warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+
+Written by xf0r3m.''') 
 
 def ytSearch(keywords, maxResults=15):
   
@@ -50,6 +61,14 @@ def getFormat(videoID):
   subprocess.run(['yt-dlp', '--list-formats', 'https://youtube.com/watch?v=' + videoID])
   f = input("Please choose youtube video format, you need put video+audio ID of quality in this format:") 
   return f 
+
+if len(sys.argv) == 2:
+  if sys.argv[1] == '--help':
+    usage()
+    sys.exit(0)
+  elif sys.argv[1] == '--version':
+    version()
+    sys.exit(0)
 
 if len(sys.argv) < 2:
   usage()
