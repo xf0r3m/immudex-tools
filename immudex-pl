@@ -15,10 +15,10 @@ function help() {
   echo "not need to be stored on the target device. Script will delete the";
   echo "file at the end of its execution. ";
   echo;
-  echo "Usage: immudex-pl [OPTIONS] link-list"; 
+  echo "Usage: immudex-pl [--video --format=240p...1080p] [--help] [--version] link-list"; 
   echo;
   echo "Options:";
-  echo "  --video --format=240p-1080p   Open link as video.";
+  echo "  --video --format=240p...1080p   Open link as video.";
   echo "  --help                        Print this message.";
   echo "  --version                     Print information about version, author and copyrights.";
   echo;
@@ -33,7 +33,7 @@ function help() {
 }
 
 function version() {
-  echo "immudex-pl 0.0.1";
+  echo "immudex-pl 1.0";
   echo;
   echo "Copyright (C) 2026 morketsmerke.org";
   echo "This is free software; see the source for copying conditions.  There is NO";

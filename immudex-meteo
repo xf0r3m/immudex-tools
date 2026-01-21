@@ -5,7 +5,7 @@ function help() {
   echo "The weather status is availabel to get in 3 formats described below";
   echo "in options.";
   echo;
-  echo "Usage: immudex-meteo [OPTIONS] location";
+  echo "Usage: immudex-meteo [--short | --long | --micro location] [--help] [--version]";
   echo;
   echo "Options:";
   echo "  --short location    Short human readable format with one small ascii art.";
@@ -23,7 +23,7 @@ function help() {
 }
 
 function version() {
-  echo "immudex-meteo 0.0.1";
+  echo "immudex-meteo 1.0";
   echo;
   echo "Copyright (C) 2026 morketsmerke.org";
   echo "This is free software; see the source for copying conditions.  There is NO";

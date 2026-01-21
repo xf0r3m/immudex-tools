@@ -13,11 +13,11 @@ function help() {
   echo "directory and download .m3u file from radio-browser.info based on a space-separated keywords.";
   echo "Data from radio-browser.info are limited to 30 results.";
   echo;
-  echo "Usage: immudex-shoutcasts [OPTIONS] --keywords=keyword1 ... keywordN";
+  echo "Usage: immudex-shoutcasts [--source=icecast | radio] [--help] [--version] --keywords=keyword1...keywordN";
   echo;
   echo "Options:";
   echo "  --source=icecast/radio              This parameter specifies source, if we want define a source. It can be omitted, then both sources will be searched.";
-  echo "  --keywords=keyword1 ... keywordsN   This parameter is required, it pass keywords to search. Keywords are space-separated.";
+  echo "  --keywords=keyword1...keywordsN   This parameter is required, it pass keywords to search. Keywords are space-separated.";
   echo "  --help                              Print this message.";
   echo "  --version                           Print information about version, author and copyrights.";
   echo;
@@ -33,7 +33,7 @@ function help() {
 }
 
 function version() {
-  echo "immudex-shoutcasts 0.0.1";
+  echo "immudex-shoutcasts 1.0";
   echo;
   echo "Copyright (C) 2026 morketsmerke.org";
   echo "This is free software; see the source for copying conditions.  There is NO";

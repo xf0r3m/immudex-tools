@@ -7,7 +7,7 @@ if [ "$1" ]; then
     echo "Information and its quantity can be changed via the configuration file.";
     echo "Script using figlet basic font and lolcat for print header of message.";
     echo;
-    echo "Usage: immudex-motd [OPTIONS]";
+    echo "Usage: immudex-motd [--help] [--version]";
     echo;
     echo "Options:";
     echo "  --help        Print this message.";
@@ -24,7 +24,7 @@ if [ "$1" ]; then
     exit 0;
   fi
   if [ "$1" = "--version" ]; then
-    echo "immudex-motd 0.0.1";
+    echo "immudex-motd 1.0";
     echo;
     echo "Copyright (C) 2026 morketsmerke.org";
     echo "This is free software; see the source for copying conditions.  There is NO";

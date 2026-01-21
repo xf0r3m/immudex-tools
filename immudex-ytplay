@@ -14,10 +14,10 @@ with possible format are printed. User have to put video and audio quality
 from table in requested format: videoQualityID+audioQualityID. There are
 a hint. Script is half-interactive.
   
-Usage: immudex-ytplay [OPTIONS] [Keywords/YouTube Link]
+Usage: immudex-ytplay [--search='keyword1...keywordN' --video | --audio] [--video youtube_link] [--audio youtube_link] [--help] [--version]
 
 Options:
-  --search='keywords1 ... keywordsN' --video/--audio   Search given keywords on YouTube and play video or audiotrack.
+  --search='keyword1...keywordN' --video/--audio       Search given keywords on YouTube and play video or audiotrack.
   --video YouTube_Link                                 Play YouTube video.
   --audio YouTube_Link                                 Play only YouTube video audiotrack.
   --help                                               Print this message.
@@ -31,9 +31,9 @@ Examples:
 Report bugs to <xf0r3m@gmail.com>''')
 
 def version():
-  print('''immudex-ytplay 0.0.1
+  print('''immudex-ytplay 1.0
 
-Copyright (C) 2025 morketsmerke.org
+Copyright (C) 2026 morketsmerke.org
 This is free software; see the source for copying conditions.  There is NO
 warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 

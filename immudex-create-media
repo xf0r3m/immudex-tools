@@ -10,13 +10,13 @@ function help() {
   echo "script prepare usb disks for 32-bit EFI systems."
   echo "Superuser (root) privileges are required.";
   echo;
-  echo "Usage: immudex-create-media [OPTIONS] --disk=usb_disk [--isofile=iso_image]";
+  echo "Usage: immudex-create-media [--help] [--version] [--i386-efi --disk=usb_disk --isofile=immudex.iso] [--nuke --disk=usb_disk] --disk=usb_disk --isofile=file.iso";
   echo;
   echo "Options:";
   echo "  --disk=/dev/sdX                           Indicates disk device.";
   echo "  --isofile=file.iso                        Indicates iso file.";
   echo "  --i386-efi --disk=/dev/sdX immudex.iso    Creating 32-bit EFI bootable usb drive with iso image. (Compatibile with immudex images only.)";
-  echo "  --nuke /dev/sdX                           Write 0's to 1st megabyte of disk, wiping partition table.";
+  echo "  --nuke --disk=/dev/sdX                    Write 0's to 1st megabyte of disk, wiping partition table.";
   echo "  --help                                    Print this message.";
   echo "  --version                                 Print information about version, author and copyrights."; 
   echo;

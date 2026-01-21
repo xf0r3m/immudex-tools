@@ -8,7 +8,7 @@ function help() {
   echo "opened device will have index equal 0, second = 1, and so on and on.";
   echo "Superuser (root) privileges are required.";
   echo;
-  echo "Usage: immudex-crypt [OPTIONS] [crypt_LUKS device] [index]";
+  echo "Usage: immudex-crypt [--list] [--create=/dev/partition] [--open=crypt_LUKS_device] [--close=index] [--help] [--version]";
   echo;
   echo "Options:";
   echo "  --list                                Prints list of opened and available crypt_LUKS devices.";

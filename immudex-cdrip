@@ -12,7 +12,7 @@ function help() {
   echo "Script apart form ripping Audio CD's, reads metadata, check it on music";
   echo "databases and creates properly named directories and audio files.";
   echo;
-  echo "Usage: immudex-cdrip [OPTIONS]";
+  echo "Usage: immudex-cdrip [--rip-only] [--get-disc-info] [--rip-n-rename] [--help] [--version]";
   echo;
   echo "Options:";
   echo "  --rip-only        Rips audio tracks from Audio CD, without quering CDIndex (MusicBrainz) database.";
