@@ -171,8 +171,10 @@ if [ "$1" ]; then
   fi
  
   #immudex-crypt RUID is EUID of sudo, which spawning immudex-crypt
-  export RUID=$(grep '^Uid:' /proc/$(pidof -s sudo)/status | awk '{printf $2}');
-  export USER=$(grep "$RUID" /etc/passwd | cut -d ":" -f1);
+  if $(pidof -sq sudo); then
+    export RUID=$(grep '^Uid:' /proc/$(pidof -s sudo)/status | awk '{printf $2}');
+    export USER=$(grep "$RUID" /etc/passwd | cut -d ":" -f1);
+  fi
 
   option=$(echo $1 | cut -d '=' -f 1);
   value=$(echo $1 | cut -d '=' -f 2-);
