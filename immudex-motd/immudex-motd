@@ -96,7 +96,7 @@ echo;
 echo "Weather:";
 if [ -x /usr/bin/immudex-meteo ]; then
   if [ "$LOCATION" ]; then
-    /usr/bin/immudex-meteo -m $LOCATION;
+    /usr/bin/immudex-meteo --micro $LOCATION;
   fi
 fi
 echo;
