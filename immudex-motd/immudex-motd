@@ -93,8 +93,8 @@ else
 fi
 echo -e " \t$(uptime | grep -o "load.*$" | tr [a-z] [A-Z])";
 echo;
-echo "Weather:";
 if [ -x /usr/bin/immudex-meteo ]; then
+echo "Weather:";
   if [ "$LOCATION" ]; then
     /usr/bin/immudex-meteo --micro $LOCATION;
   fi
